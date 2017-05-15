@@ -1,0 +1,11 @@
+// Use strict moode to throw exceptions on negative numbers.
+
+CREATE TABLE account (
+    rfid1 SMALLINT UNSIGNED NOT NULL, 
+    rfid2 SMALLINT UNSIGNED NOT NULL, 
+    rfid3 SMALLINT UNSIGNED NOT NULL, 
+    rfid4 SMALLINT UNSIGNED NOT NULL, 
+    balance INT(6) UNSIGNED NOT NULL,
+    last_update TIMESTAMP NOT NULL,
+    PRIMARY KEY(rfid1, rfid2, rfid3, rfid4)
+)
