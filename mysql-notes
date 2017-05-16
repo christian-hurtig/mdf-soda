@@ -9,3 +9,26 @@ CREATE TABLE account (
     last_update TIMESTAMP NOT NULL,
     PRIMARY KEY(rfid1, rfid2, rfid3, rfid4)
 )
+
+DELIMITER //
+CREATE PROCEDURE swipe_card(IN input1 SMALLINT UNSIGNED, IN input2 SMALLINT UNSIGNED, 
+                            IN input3 SMALLINT UNSIGNED, IN input4 SMALLINT UNSIGNED)
+BEGIN
+    INSERT IGNORE INTO account (rfid1, rfid2, rfid3, rfid4, balance, last_used)
+    VALUES (input1, input2, input3, input4, 0, NOW());
+           
+    SELECT balance
+    FROM account
+    WHERE rfid1 = input1 AND rfid2 = input2 AND rfid3 = input3 AND rfid4 = input4;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE button_pressed(IN input1 SMALLINT UNSIGNED, IN input2 SMALLINT UNSIGNED, 
+                                IN input3 SMALLINT UNSIGNED, IN input4 SMALLINT UNSIGNED)
+BEGIN
+    UPDATE account
+    SET balance = balance - 5, last_update = NOW()
+    WHERE rfid1 = input1 AND rfid2 = input2 AND rfid3 = input3 AND rfid4 = input4;
+END //
+DELIMITER ;
