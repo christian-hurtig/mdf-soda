@@ -16,7 +16,7 @@ util.debug = True
 GPIO.setmode(GPIO.BOARD)
 inputPin = 11
 outputPin = 12
-GPIO.setup(inputPin, GPIO.IN) # ADD PULLUP PULL DOWN?
+GPIO.setup(inputPin, GPIO.IN, GPIO.PUD_DOWN) # Pull down correct?
 GPIO.setup(outputPin, GPIO.OUT)
 
 config = {
