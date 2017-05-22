@@ -19,6 +19,7 @@ outputPin = 12
 GPIO.setup(inputPin, GPIO.IN, GPIO.PUD_DOWN) # Pull down correct?
 GPIO.setup(outputPin, GPIO.OUT)
 
+# TODO Fix db account information and permissions.
 config = {
   'user': 'scott',
   'password': 'tiger',
@@ -49,14 +50,14 @@ while run:
 
     (error, uid) = rdr.anticoll()
     if not error:
-        #Card was detected and there were
+        # Card was detected and there were no errors
         cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
         cursor.callproc('cardSwipe', (uid[0], uid[1], uid[2], uid[3]))
         results=mysql_cursor.fetchone()
         
         if result[0] >= 5:
-            #CARD WAS ACCEPTED, SET GPIO TO HIGH
+            # Card was accepted and the account has more than 5 SEK, enable the butttons by setting output to high
             GPIO.output(outputPin, GPIO.HIGH)
             
             # Wait for 5000 ms for button press
@@ -67,6 +68,8 @@ while run:
                 # Button was pressed and card should be charged. 
                 cursor.callproc('buttonPressed', (uid[0], uid[1], uid[2], uid[3]))
         
+        
+        # Transaction complete, disable buttons and close db connection.
         cursor.close()
         cnx.close()
         GPIO.output(outputPin, GPIO.LOW)
